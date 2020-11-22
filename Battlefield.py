@@ -13,7 +13,13 @@ class Battlefield:
         '''
         def __init__(self, passable, x, y, unit = None):
             '''
-            TODO: Description
+            Creates a new Tile objecr
+
+            Arguments:
+                passable (boolean): True if the tile can be passed through/stood in, False otherwise.
+                x (non-negative integer): The x coordinate of this tile.
+                y (non-negative integer): The y coordinate of this tile.
+                unit (subclass of UnitParent): The unit who starts in this tile. Default value is None.
             '''
             self._passable = passable
             self._coors = (x,y)
@@ -80,11 +86,15 @@ class Battlefield:
             '''
             return self._unit is not None
 
-    def __init__(self, x, y):
+    def __init__(self, tiles):
         '''
-        TODO: Description & body
+        Creates a new Battlefield object
+
+        Arguments:
+            tiles (2D Array of Tiles): The tiles to use for the Battlefield
         '''
-        pass
+        self._tiles = tiles
+        self._shape = (len(tiles), len(tiles[0]))
 
     def get_tile(self, x, y):
         '''
@@ -98,8 +108,7 @@ class Battlefield:
 
         Exceptions: Index Error - if the coordinates are out of bounds
         '''
-        # TODO: Body
-        pass
+        return self._tiles[x,y]
 
     def shape(self):
         '''
@@ -107,8 +116,7 @@ class Battlefield:
 
         Returns: Tuple containing the size of the Battlefield (non-negative int, non-negative int)
         '''
-        # TODO: Body
-        pass
+        return self._shape
 
     # TODO: More stuff
 

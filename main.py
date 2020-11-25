@@ -3,6 +3,8 @@
 # import Unit
 
 # generate battlefield
+tiles = [[Battlefild.Tile(i,j) for i in range(10)] for j in range(10)]
+bf = Battlefield(tiles)
 
 # generate armies
 

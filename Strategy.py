@@ -5,7 +5,9 @@ from collections import deque
 # Copy/paste into Soldier child class (of Unit)
 def soldier_strategy(self, battlefield):
     """
-
+    Scans the battlefield using bfs() for a target it can attack adjacently.
+    self = Self
+    battlefield = the 2D array that stores all of the battlefield tiles
     """
     #move = array, (up/down/left/right, up/down/left/right)
     #target = array, (coordianates of target)
@@ -18,7 +20,9 @@ def soldier_strategy(self, battlefield):
 # Copy/paste into Healer child class (of Unit)
 def healer_strategy(self, battlefield):
     """
-
+    Scans the battlefield using bfs() for a target it can heal adjacently.
+    self = Self
+    battlefield = the 2D array that stores all of the battlefield tiles
     """
     #move = array, (up/down/left/right, up/down/left/right)
     #target = array, (coordianates of target)
@@ -28,8 +32,48 @@ def healer_strategy(self, battlefield):
     target = [-1]
     return (move, target)
 
+# Copy/paste into Healer child class (of Unit)
+def ranger_strategy(self, battlefield):
+    """
+    Scans the battlefield using bfs() for a target it can attack from a range.
+    self = Self
+    battlefield = the 2D array that stores all of the battlefield tiles
+    """
+    #move = array, (up/down/left/right, up/down/left/right)
+    #target = array, (coordianates of target)
+
+    path = bfs(battlefield, lambda x: x.allegiance != self.allegiance)
+    if(len(path) > 5): #replace 5 with self.range, if it is recorded in the ranger's stats
+        move = path[:self.movement]
+    else:
+        move = path[:0]
+    target = [-1]
+    return (move, target)
+
+# Copy/paste into Healer child class (of Unit)
+def general_strategy(self, battlefield):
+    """
+    Scans the battlefield using bfs() for a target it can attack adjacently.
+    self = Self
+    battlefield = the 2D array that stores all of the battlefield tiles
+    """
+    #move = array, (up/down/left/right, up/down/left/right)
+    #target = array, (coordianates of target)
+
+    path = bfs(battlefield, lambda x: x.allegiance != self.allegiance)
+    move = path[:self.movement]
+    target = [-1]
+    return (move, target)
+
 # Copy/paste into Unit parent class
 def bfs(self, battlefield, is_valid_target):
+    """
+    Every unit scans the battlefield for a valid target using a breadth-first search, finding a path to them
+    in order to use their ability on them.
+    self = Self
+    battlefield = the 2D array that stores all of the battlefield tiles
+    is_valid_target = determines if the unit will target friendly or enemy units
+    """
     queue = deque([[self.position]])
     seen = self.position
     while queue:

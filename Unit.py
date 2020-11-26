@@ -1,6 +1,4 @@
 class Unit:
-
-
     # Class(Sharvita)
 
     # Hit Points(HP)
@@ -16,74 +14,72 @@ class Unit:
     # Evasion
     # Abilities
 
-    movementspeed = 0
-    health = 0
-    damage = 0
-    catagory = ""
-    armytype = ""
-    initiative = 0
-    accuracy = 0
-    range = 0
-    abilities = ""
-    evasion = 0
-    armytype = ""
-
-
-    def __init__(self, health,damage, catagory, armytype, initiative, accuracy, range, movementspeed, evasion):
-        self._healthPoint = health
-        self._damage = damage
-        self._catagory = catagory
-        self._armytype = armytype
-        self._initiative = initiative
-        self._accuracy = accuracy
-        self._range = range
-        self._movementspeed = movementspeed
-        self._evasion = evasion
+    def __init__(self, health,damage, category, allegiance, initiative, accuracy, rnge, movement, evasion):
+        self.health = health
+        self.health_max = health
+        self.damage = damage
+        self.category = category
+        self.allegiance = allegiance
+        self.initiative = initiative
+        self.accuracy = accuracy
+        self.range = rnge
+        self.movement = movement
+        self.evasion = evasion
 
 
     #getters
-    def gethealth(self):
-        return self._health
-    def getdamage(self):
-        return self._damage
-    def getcatagory(self):
-        return self._catagory
-    def getarmytype(self):
-        return self._armytype
-    def getinitiative(self):
-        return self._initiative
-    def getaccuracy(self):
-        return self._accuracy
-    def getrange(self):
-        return self._range
-    def getmovementspeed(self):
-        return self._movementspeed
-    def getevasion(self):
-        return self._evasion
+    def get_health(self):
+        return self.health
+    def get_damage(self):
+        return self.damage
+    def get_catagory(self):
+        return self.catagory
+    def get_armytype(self):
+        return self.armytype
+    def get_initiative(self):
+        return self.initiative
+    def get_accuracy(self):
+        return self.accuracy
+    def get_range(self):
+        return self.range
+    def get_movement(self):
+        return self.movement
+    def get_evasion(self):
+        return self.evasion
 
 
-    #setter
-    def sethealth(self, health):
-        self._health = health
-    def setdamage(self, damage):
-        self._damage = damage
-    def setcatagory(self, catagory):
-        self._catagory = catagory
-    def setinitiative(self, initiative):
-        self._initiative = initiative
-    def setaccuracy(self, accuracy):
-        self._accuracy = accuracy
-    def setrange(self, range):
-        self._range = range
-    def setmovementspeed(self,movementspeed):
-        self._movementspeed = movementspeed
-    def setevasion(self, evasion):
-        self._evasion = evasion
+    def set_health(self, health):
+        self.health = health
+    def set_damage(self, damage):
+        self.damage = damage
+    def set_catagory(self, catagory):
+        self.catagory = catagory
+    def set_initiative(self, initiative):
+        self.initiative = initiative
+    def set_accuracy(self, accuracy):
+        self.accuracy = accuracy
+    def set_range(self, range):
+        self.range = range
+    def set_movement(self,movement):
+        self.movement = movement
+    def set_evasion(self, evasion):
+        self.evasion = evasion
+
+    def is_alive():
+        return self.health != 0
+    def harm(num):
+        self.health -= num
+        if self.health < 0:
+            self.health = 0
+    def heal(num):
+        self.health += num
+        if self.health > self.health_max:
+            self.health = self.health_max
 
 #a = Unit(11,2, "skdfh", "sdjfg", 4, 6, 7, 9, 3)
-#print(a.getdamage())
-#a.setdamage(67)
-#print(a.getdamage())
+#print(a.get_damage())
+#a.set_damage(67)
+#print(a.get_damage())
 
 
 

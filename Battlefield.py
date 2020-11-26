@@ -108,7 +108,7 @@ class Battlefield:
 
         Exceptions: Index Error - if the coordinates are out of bounds
         '''
-        return self._tiles[x,y]
+        return self._tiles[x][y]
 
     def shape(self):
         '''

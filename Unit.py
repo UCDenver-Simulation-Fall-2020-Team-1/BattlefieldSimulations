@@ -80,10 +80,10 @@ class Unit:
     def setevasion(self, evasion):
         self._evasion = evasion
 
-a = Unit(11,2, "skdfh", "sdjfg", 4, 6, 7, 9, 3)
-print(a.getdamage())
-a.setdamage(67)
-print(a.getdamage())
+#a = Unit(11,2, "skdfh", "sdjfg", 4, 6, 7, 9, 3)
+#print(a.getdamage())
+#a.setdamage(67)
+#print(a.getdamage())
 
 
 

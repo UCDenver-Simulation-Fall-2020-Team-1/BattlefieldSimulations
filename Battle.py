@@ -17,13 +17,14 @@ class Battle:
     def run(self):
         # drive the simulation, ie, generate move_queues and run through them
         # until an end condition is reached
-        while not end_condition():
-           move_queue = generate_queue()
-           for u in move_queue if u.is_alive():
-               take_turn(u)
-               self.move_number += 1
+        while not self.end_condition():
+           self.move_queue = self.generate_queue()
+           for u in self.move_queue:
+               if u.is_alive():
+                   self.take_turn(u)
+                   self.move_number += 1
            self.turn_number += 1
-        return end_condition()
+        return self.end_condition()
 
     def setup(self):
         # put units on battlefield in their deployment zones
@@ -58,6 +59,7 @@ class Battle:
 
     def end_condition(self):
         # check for number of turns with no combat, or if all members of an army are dead
+        # return turns_since_last_combat > 10 or army1.is_defeated() or army2.is_defeated()
         # could return the result
         pass
 

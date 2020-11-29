@@ -69,6 +69,8 @@ class Battlefield:
             '''
             old_unit = self._unit
             self._unit = unit
+            if unit is not None:
+                unit.set_tile(self)
             return old_unit
         def remove_unit(self):
             '''

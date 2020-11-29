@@ -1,10 +1,9 @@
 class Army:
-    def __init__(self, num, name, units, deployment, general):
+    def __init__(self, name, num, units, deployment, general):
         self.num = num
         self.name = name
         self.units = units
         self.deployment = deployment
-        self.units_alive = len(units)
         self.general = general
 
     def get_name(self):
@@ -20,10 +19,7 @@ class Army:
         return self.general
 
     def is_defeated(self):
-        return self.units_alive == 0
+        return self.num_alive() == 0
 
     def num_alive(self):
-        return self.units_alive
-
-    def unit_died(self):
-        self.units_alive -= 1
+        return len([u for u in self.units if u.is_alive()])

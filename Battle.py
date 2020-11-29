@@ -25,7 +25,7 @@ class Battle:
                    self.move_number += 1
            self.turn_number += 1
            self.turns_since_last_combat += 1
-        return self.end_condition()
+        return self.army1 if not self.army1.is_defeated() else self.army2 if not self.army2.is_defeated() else None
 
     def setup(self):
         # put units on battlefield in their deployment zones
@@ -37,15 +37,23 @@ class Battle:
 
     def take_turn(self,u):
         # get the move from the unit whose turn it is (or their general)
-        # movement, target = u.get_move(self.battlefield)
+        print(self.battlefield)
+        movement, target = u.get_move(self.battlefield)
+        print(str(u.get_id()) + " wants to move with " + str(movement) + " to attack " + str(target) + "\n")
         # check the move for validity (throw an exception, probably)
         # move_to_string to log file (or use logging class)
         # execute the move (move the unit where it wants to go, and execute the unit's ability)
-        # for move in movement:
-        #   # move the unit to the new square, remove it from the old
-        #   # 
-        #   # visualize it, log it
-        #   # print("unit " + str(u.get_id()) + " moved from " + old + " to " + u.get_tile())
+        for move in movement[1:]:
+            # move the unit to the new square, remove it from the old
+            u.get_tile().remove_unit() 
+            self.battlefield.get_tile(*move).set_unit(u)
+            print(self.battlefield)
+            input("press enter...")
+        u.use_ability(self.battlefield.get_tile(*target).unit())
+        input("press enter...")
+            
+            # visualize it, log it
+            # print("unit " + str(u.get_id()) + " moved from " + old + " to " + u.get_tile())
         # attack/heal next unit, if possible (set turns_since_last_combat to 0 if it is)
         # 
         # if a unit dies, remove it from the battlefield object, and move_queue 
@@ -61,7 +69,7 @@ class Battle:
         # take all (alive) units from both armies, sort by initiative
         units = [u for u in self.army1.get_units() + self.army2.get_units() if u.is_alive()]
         # order by initiative, and then random
-        return sorted(units, key=lambda x: (x.get_initiative, random.random()))
+        return sorted(units, key=lambda x: (x.get_initiative(), random.random()))
 
     def end_condition(self):
         # check for number of turns with no combat, or if all members of an army are dead

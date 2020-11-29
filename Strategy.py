@@ -14,7 +14,7 @@ def soldier_strategy(self, battlefield):
 
     path = bfs(battlefield, lambda x: x.allegiance != self.allegiance)
     move = path[:self.movement]
-    target = [-1]
+    target = path[-1]
     return (move, target)
 
 # Copy/paste into Healer child class (of Unit)
@@ -61,6 +61,7 @@ def general_strategy(self, battlefield):
     #target = array, (coordianates of target)
 
     path = bfs(battlefield, lambda x: x.allegiance != self.allegiance)
+    print(path)
     move = path[:self.movement]
     target = [-1]
     return (move, target)

@@ -49,7 +49,8 @@ class Battle:
             self.battlefield.get_tile(*move).set_unit(u)
             print(self.battlefield)
             input("press enter...")
-        u.use_ability(self.battlefield.get_tile(*target).unit())
+        if target != None:
+            u.use_ability(self.battlefield.get_tile(*target).unit())
         input("press enter...")
             
             # visualize it, log it

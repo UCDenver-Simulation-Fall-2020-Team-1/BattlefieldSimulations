@@ -134,6 +134,9 @@ class Unit:
         #target = array, (coordianates of target)
     
         path = self.bfs(battlefield, lambda x: x.allegiance != self.allegiance)
+        if path == None:
+            print(str(self.id) + " is stuck")
+            return (None,None)
         if len(path) - 2 < self.movement:
             move = path[:-1]
         else:

@@ -126,6 +126,9 @@ class Battlefield:
             for y in range(self._shape[1]):
                 if self._tiles[x][y].has_unit():
                     out += str(self._tiles[x][y].unit().get_allegiance()) + " " 
+                elif not self._tiles[x][y].is_passable():
+                    out += "X "
+
                 else:
                     out += "0 "
             out += "\n"

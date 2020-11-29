@@ -26,7 +26,7 @@ class Battle:
                if u.is_alive():
                    self.take_turn(u)
                    self.move_number += 1
-                   if generate_frames:
+                   if self.generate_frames:
                        generate_frame(self.battlefield, self.frame_title()%(self.turn_number,self.move_number))
            self.turn_number += 1
            self.move_number = 0
@@ -39,7 +39,7 @@ class Battle:
             self.battlefield.get_tile(*self.army1.get_deployment()[i]).set_unit(self.army1.get_units()[i])
         for i in range(len(self.army2.units)):
             self.battlefield.get_tile(*self.army2.get_deployment()[i]).set_unit(self.army2.get_units()[i])
-        if generate_frames:
+        if self.generate_frames:
             generate_frame(self.battlefield, self.frame_title()%(self.turn_number,self.move_number))
         self.turn_number +=1
         #print(self.battlefield)

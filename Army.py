@@ -1,7 +1,6 @@
-
-
 class Army:
-    def __init__(self, name, units, deployment, general):
+    def __init__(self, num, name, units, deployment, general):
+        self.num = num
         self.name = name
         self.units = units
         self.deployment = deployment

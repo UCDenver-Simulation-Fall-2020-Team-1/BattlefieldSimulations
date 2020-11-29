@@ -24,13 +24,16 @@ class Battle:
                    self.take_turn(u)
                    self.move_number += 1
            self.turn_number += 1
+           self.turns_since_last_combat += 1
         return self.end_condition()
 
     def setup(self):
         # put units on battlefield in their deployment zones
-        for i in range(5):
+        for i in range(len(self.army1.units)):
             self.battlefield.get_tile(*self.army1.get_deployment()[i]).set_unit(self.army1.get_units()[i])
+        for i in range(len(self.army2.units)):
             self.battlefield.get_tile(*self.army2.get_deployment()[i]).set_unit(self.army2.get_units()[i])
+        print(self.battlefield)
 
     def take_turn(self,u):
         # get the move from the unit whose turn it is (or their general)
@@ -40,8 +43,11 @@ class Battle:
         # execute the move (move the unit where it wants to go, and execute the unit's ability)
         # for move in movement:
         #   # move the unit to the new square, remove it from the old
+        #   # 
         #   # visualize it, log it
+        #   # print("unit " + str(u.get_id()) + " moved from " + old + " to " + u.get_tile())
         # attack/heal next unit, if possible (set turns_since_last_combat to 0 if it is)
+        # 
         # if a unit dies, remove it from the battlefield object, and move_queue 
         # actually probably don't need to worry about the move_queue since it has a check for "alive"
         pass
@@ -59,7 +65,7 @@ class Battle:
 
     def end_condition(self):
         # check for number of turns with no combat, or if all members of an army are dead
-        # return turns_since_last_combat > 10 or army1.is_defeated() or army2.is_defeated()
+        return self.turns_since_last_combat > 10 or self.army1.is_defeated() or self.army2.is_defeated()
         # could return the result
         pass
 

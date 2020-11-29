@@ -118,5 +118,16 @@ class Battlefield:
         '''
         return self._shape
 
+    def __str__(self):
+        out = ""
+        for x in range(self._shape[0]):
+            for y in range(self._shape[1]):
+                if self._tiles[x][y].has_unit():
+                    out += str(self._tiles[x][y].unit().get_allegiance()) + " " 
+                else:
+                    out += "0 "
+            out += "\n"
+        return out
+
     # TODO: More stuff
 

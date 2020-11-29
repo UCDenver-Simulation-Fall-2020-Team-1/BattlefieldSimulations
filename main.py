@@ -8,13 +8,13 @@ tiles = [[Battlefield.Tile(True,i,j) for i in range(10)] for j in range(10)]
 bf = Battlefield(tiles)
 
 # generate armies
-u1 = [Unit(50,20,"soldier","Army 1", 5, 0,0,0,0) for i in range(5)]
-dpl1 = [(i+3,1) for i in range(5)]
-a1 = Army("Army 1", u1, dpl1, None)
+u1 = [Unit(50,20,"soldier",1, 5, 0,0,0,0) for i in range(4)]
+dpl1 = [(i+3,1) for i in range(4)]
+a1 = Army("Army 1",2, u1, dpl1, None)
 
-u2 = [Unit(50,20,"soldier","Army 2", 5, 0,0,0,0) for i in range(5)]
-dpl2 = [(i+3,8) for i in range(5)]
-a2 = Army("Army 2", u2, dpl2, None)
+u2 = [Unit(50,20,"soldier",2, 5, 0,0,0,0) for i in range(4)]
+dpl2 = [(i+3,8) for i in range(4)]
+a2 = Army("Army 2", 2, u2, dpl2, None)
 
 # assign deployment
 

@@ -36,6 +36,8 @@ class Unit:
     #getters
     def get_health(self):
         return self.health
+    def get_health_max(self):
+        return self.health_max
     def get_damage(self):
         return self.damage
     def get_category(self):
@@ -84,9 +86,10 @@ class Unit:
             self.health = 0
             self.tile.remove_unit()
             self.tile = None
-            print(str(self.id) + " has died")
+            #print(str(self.id) + " has died")
         else:
-            print(str(self.id) + " has " + str(self.health))
+            """"""
+            #print(str(self.id) + " has " + str(self.health))
     def heal(self, num):
         self.health += num
         if self.health > self.health_max:
@@ -135,7 +138,7 @@ class Unit:
     
         path = self.bfs(battlefield, lambda x: x.allegiance != self.allegiance)
         if path == None:
-            print(str(self.id) + " is stuck")
+            #print(str(self.id) + " is stuck")
             return (None,None)
         if len(path) - 2 < self.movement:
             move = path[:-1]
@@ -146,7 +149,7 @@ class Unit:
 
     def soldier_use_ability(self, target_unit):
         if not self.target_in_range(target_unit):
-            print(str(self.id) + " can't reach " + str(target_unit.get_id()))
+            #print(str(self.id) + " can't reach " + str(target_unit.get_id()))
             return
-        print(str(self.id) + " swings on " + str(target_unit.get_id()) + " for " + str(self.damage) + " damage")
+        #print(str(self.id) + " swings on " + str(target_unit.get_id()) + " for " + str(self.damage) + " damage")
         target_unit.harm(self.damage)

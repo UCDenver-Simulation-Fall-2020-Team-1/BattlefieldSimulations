@@ -20,15 +20,16 @@ a2 = Army("Army 2", 2, u2, dpl2, None)
 
 # all of above could come from a file (pickled, or json)
 
-# create battle
-btl = Battle(bf, a1, a2)
-btl.setup()
-
-# run battle
-winner = btl.run()
-if winner is not None:
-    print(winner.name + " is victorious!")
-else:
-    print("Draw!")
+## create battle
+#btl = Battle(bf, a1, a2)
+#btl.setup()
+#
+## run battle
+#winner = btl.run()
+#if winner is not None:
+#    print(winner.name + " is victorious!")
+#else:
+#    print("Draw!")
 
 # print result
+for i in range(100)

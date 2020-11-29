@@ -1,10 +1,11 @@
 # import BattleField
 # import Unit
-# import Vis
+from viz import generate_frame
+from datetime import datetime
 import random
 
 class Battle:
-    def __init__(self, battlefield, army1, army2):
+    def __init__(self, battlefield, army1, army2, desc="battle", generate_frames=False):
         self.battlefield = battlefield
         self.army1 = army1
         self.army2 = army2
@@ -12,6 +13,8 @@ class Battle:
         self.turn_number = 0
         self.move_number = 0
         self.turns_since_last_combat = 0
+        self.desc = desc + "_" + str(datetime.now().strftime("%m-%d_%H:%M:%S"))
+        self.generate_frames = generate_frames
         # some debug level?
 
     def run(self):
@@ -23,7 +26,10 @@ class Battle:
                if u.is_alive():
                    self.take_turn(u)
                    self.move_number += 1
+                   if generate_frames:
+                       generate_frame(self.battlefield, self.frame_title()%(self.turn_number,self.move_number))
            self.turn_number += 1
+           self.move_number = 0
            self.turns_since_last_combat += 1
         return self.army1 if not self.army1.is_defeated() else self.army2 if not self.army2.is_defeated() else None
 
@@ -33,25 +39,29 @@ class Battle:
             self.battlefield.get_tile(*self.army1.get_deployment()[i]).set_unit(self.army1.get_units()[i])
         for i in range(len(self.army2.units)):
             self.battlefield.get_tile(*self.army2.get_deployment()[i]).set_unit(self.army2.get_units()[i])
-        print(self.battlefield)
+        if generate_frames:
+            generate_frame(self.battlefield, self.frame_title()%(self.turn_number,self.move_number))
+        self.turn_number +=1
+        #print(self.battlefield)
 
     def take_turn(self,u):
         # get the move from the unit whose turn it is (or their general)
-        print(self.battlefield)
+        # print(self.battlefield)
         movement, target = u.get_move(self.battlefield)
-        print(str(u.get_id()) + " wants to move with " + str(movement) + " to attack " + str(target) + "\n")
+        # print(str(u.get_id()) + " wants to move with " + str(movement) + " to attack " + str(target) + "\n")
         # check the move for validity (throw an exception, probably)
         # move_to_string to log file (or use logging class)
         # execute the move (move the unit where it wants to go, and execute the unit's ability)
-        for move in movement[1:]:
-            # move the unit to the new square, remove it from the old
-            u.get_tile().remove_unit() 
-            self.battlefield.get_tile(*move).set_unit(u)
-            print(self.battlefield)
-            input("press enter...")
+        if movement != None:
+            for move in movement[1:]:
+                # move the unit to the new square, remove it from the old
+                u.get_tile().remove_unit() 
+                self.battlefield.get_tile(*move).set_unit(u)
+                #print(self.battlefield)
+                #input("press enter...")
         if target != None:
             u.use_ability(self.battlefield.get_tile(*target).unit())
-        input("press enter...")
+        #input("press enter...")
             
             # visualize it, log it
             # print("unit " + str(u.get_id()) + " moved from " + old + " to " + u.get_tile())
@@ -62,7 +72,6 @@ class Battle:
         pass
 
     def apply_move(self,unit, move):
-        # execute the move (move the unit where it wants to go, and execute the unit's ability)
         # probably don't need this function, actually.
         pass
 
@@ -82,3 +91,5 @@ class Battle:
         # call visualization, maybe some color data, save frame indexed by move number
         pass
 
+    def frame_title(self):
+        return self.desc + "_" + "turn%03d" + "_" + "move%03d" +  ".png"

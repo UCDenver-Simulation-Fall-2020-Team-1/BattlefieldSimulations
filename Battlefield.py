@@ -69,6 +69,8 @@ class Battlefield:
             '''
             old_unit = self._unit
             self._unit = unit
+            if unit is not None:
+                unit.set_tile(self)
             return old_unit
         def remove_unit(self):
             '''
@@ -108,7 +110,7 @@ class Battlefield:
 
         Exceptions: Index Error - if the coordinates are out of bounds
         '''
-        return self._tiles[x,y]
+        return self._tiles[x][y]
 
     def shape(self):
         '''
@@ -117,6 +119,25 @@ class Battlefield:
         Returns: Tuple containing the size of the Battlefield (non-negative int, non-negative int)
         '''
         return self._shape
+
+    def reset(self):
+        for x in range(self._shape[0]):
+            for y in range(self._shape[1]):
+                self._tiles[x][y].remove_unit()
+
+    def __str__(self):
+        out = ""
+        for x in range(self._shape[0]):
+            for y in range(self._shape[1]):
+                if self._tiles[x][y].has_unit():
+                    out += str(self._tiles[x][y].unit().get_allegiance()) + " " 
+                elif not self._tiles[x][y].is_passable():
+                    out += "X "
+
+                else:
+                    out += "0 "
+            out += "\n"
+        return out
 
     # TODO: More stuff
 

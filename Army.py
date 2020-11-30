@@ -23,3 +23,7 @@ class Army:
 
     def num_alive(self):
         return len([u for u in self.units if u.is_alive()])
+
+    def reset(self):
+        for u in self.units:
+            u.reset()

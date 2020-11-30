@@ -120,6 +120,11 @@ class Battlefield:
         '''
         return self._shape
 
+    def reset(self):
+        for x in range(self._shape[0]):
+            for y in range(self._shape[1]):
+                self._tiles[x][y].remove_unit()
+
     def __str__(self):
         out = ""
         for x in range(self._shape[0]):

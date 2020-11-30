@@ -26,7 +26,8 @@ class Battle:
     def run(self):
         # drive the simulation, ie, generate move_queues and run through them
         # until an end condition is reached
-        while not self.viz.game_exit:
+        viz_game_exit = False
+        while not viz_game_exit:
             while not self.end_condition():
                 self.move_queue = self.generate_queue()
                 for u in self.move_queue:
@@ -34,20 +35,27 @@ class Battle:
                         self.take_turn(u)
                         self.move_number += 1
 
-                        self.viz.update_board(self.battlefield)
-                        time.sleep(0.05)
+                        if self.viz != None:
+                            self.viz.update_board(self.battlefield)
+                            time.sleep(0.05)
 
                         if self.generate_frames:
                             generate_frame(self.battlefield, self.frame_title() % (self.turn_number, self.move_number))
                 self.turn_number += 1
                 self.move_number = 0
                 self.turns_since_last_combat += 1
+            
+            if self.viz != None:
+                viz_game_exit = self.viz.game_exit
+            else:
+                viz_game_exit = True
 
             return self.army1 if not self.army1.is_defeated() else self.army2 if not self.army2.is_defeated() else None
 
     def setup(self):
 
-        self.viz.start()
+        if self.viz != None:
+            self.viz.start()
 
         # put units on battlefield in their deployment zones
         for i in range(len(self.army1.units)):
@@ -86,3 +94,15 @@ class Battle:
     def end_condition(self):
         # check for number of turns with no combat, or if all members of an army are dead
         return self.turns_since_last_combat > 10 or self.army1.is_defeated() or self.army2.is_defeated()
+
+    def reset(self):
+        self.army1.reset()
+        self.army2.reset()
+        self.battlefield.reset()
+
+        self.move_queue = []
+        self.turn_number = 0
+        self.move_number = 0
+        self.turns_since_last_combat = 0
+
+        self.setup()

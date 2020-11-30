@@ -78,6 +78,9 @@ class Unit:
     def set_tile(self, tile):
         self.tile = tile
 
+    def reset(self):
+        self.health = self.health_max
+
     def is_alive(self):
         return self.health != 0
     def harm(self, num):

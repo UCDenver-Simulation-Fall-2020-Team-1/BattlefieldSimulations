@@ -27,7 +27,7 @@ class game_visualizer:
     def __init__(self, board_size, battlefield):
         self.py_game = pygame
         self.board_size = board_size
-        self.white, self.black, self.red, self.blue = (255, 255, 255), (0, 0, 0), (255, 0, 0), (0, 0, 255)
+        self.white, self.black, self.red, self.blue, self.brown = (255, 255, 255), (0, 0, 0), (255, 0, 0), (0, 0, 255), (210, 105, 30)
         self.game_display = None
         self.game_number = 0
         self.square_size = 25
@@ -99,6 +99,8 @@ class game_visualizer:
             for cell in column:
                 if cell.unit():
                     self.grid[i][j] = cell.unit().allegiance
+                elif not cell.is_passable():
+                    self.grid[i][j] = -1
                 else:
                     self.grid[i][j] = 0
                 i += 1
@@ -144,6 +146,8 @@ class game_visualizer:
             for cell in row:
                 if cell.unit():
                     self.grid[i][j] = cell.unit().allegiance
+                elif not cell.is_passable():
+                    self.grid[i][j] = -1
                 else:
                     self.grid[i][j] = 0
                 i += 1
@@ -162,7 +166,9 @@ class game_visualizer:
         for row in range(self.board_size):
             for column in range(self.board_size):
                 color = self.white
-                if self.grid[row][column] == 1:
+                if self.grid[row][column] == -1:
+                    color = self.brown
+                elif self.grid[row][column] == 1:
                     ratio = 1 - (self.battlefield.get_tile(column, row).unit().health / self.battlefield.get_tile(column, row).unit().health_max)
                     color = (int(255*ratio), int(255*ratio), 255)
                 elif self.grid[row][column] == 2:

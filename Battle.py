@@ -3,9 +3,13 @@
 from viz import generate_frame
 from datetime import datetime
 import random
+from viz import game_visualizer
+import time
+
+
 
 class Battle:
-    def __init__(self, battlefield, army1, army2, desc="battle", generate_frames=False):
+    def __init__(self, battlefield, army1, army2, game_view, desc="battle", generate_frames=False):
         self.battlefield = battlefield
         self.army1 = army1
         self.army2 = army2
@@ -16,24 +20,34 @@ class Battle:
         self.desc = desc + "_" + str(datetime.now().strftime("%m-%d_%H:%M:%S"))
         self.generate_frames = generate_frames
         # some debug level?
+        self.viz = game_view
 
     def run(self):
         # drive the simulation, ie, generate move_queues and run through them
         # until an end condition is reached
-        while not self.end_condition():
-           self.move_queue = self.generate_queue()
-           for u in self.move_queue:
-               if u.is_alive():
-                   self.take_turn(u)
-                   self.move_number += 1
-                   if self.generate_frames:
-                       generate_frame(self.battlefield, self.frame_title()%(self.turn_number,self.move_number))
-           self.turn_number += 1
-           self.move_number = 0
-           self.turns_since_last_combat += 1
-        return self.army1 if not self.army1.is_defeated() else self.army2 if not self.army2.is_defeated() else None
+        while not self.viz.game_exit:
+            while not self.end_condition():
+                self.move_queue = self.generate_queue()
+                for u in self.move_queue:
+                    if u.is_alive():
+                        self.take_turn(u)
+                        self.move_number += 1
+
+                        self.viz.update_board(self.battlefield)
+                        time.sleep(0.05)
+
+                        if self.generate_frames:
+                            generate_frame(self.battlefield, self.frame_title() % (self.turn_number, self.move_number))
+                self.turn_number += 1
+                self.move_number = 0
+                self.turns_since_last_combat += 1
+
+            return self.army1 if not self.army1.is_defeated() else self.army2 if not self.army2.is_defeated() else None
 
     def setup(self):
+
+        self.viz.start()
+
         # put units on battlefield in their deployment zones
         for i in range(len(self.army1.units)):
             self.battlefield.get_tile(*self.army1.get_deployment()[i]).set_unit(self.army1.get_units()[i])
@@ -42,6 +56,7 @@ class Battle:
         if self.generate_frames:
             generate_frame(self.battlefield, self.frame_title()%(self.turn_number,self.move_number))
         self.turn_number +=1
+
         #print(self.battlefield)
 
     def take_turn(self,u):

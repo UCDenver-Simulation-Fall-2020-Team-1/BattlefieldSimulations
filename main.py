@@ -3,19 +3,20 @@ from Battlefield import *
 from Army import *
 from Unit import *
 from viz import *
+from setups import *
 
 # generate battlefield
-tiles = [[Battlefield.Tile(True,j,i) for i in range(10)] for j in range(10)]
-bf = Battlefield(tiles)
-
-# generate armies
-u1 = [Unit(50,20,"soldier",1, 5, 0,1,2,0) for i in range(4)]
-dpl1 = [(i+3,1) for i in range(4)]
-a1 = Army("Army 1",1, u1, dpl1, None)
-
-u2 = [Unit(50,20,"soldier",2, 5, 0,1,2,0) for i in range(4)]
-dpl2 = [(i+3,8) for i in range(4)]
-a2 = Army("Army 2", 2, u2, dpl2, None)
+#tiles = [[Battlefield.Tile(True,j,i) for i in range(10)] for j in range(10)]
+#bf = Battlefield(tiles)
+#
+## generate armies
+#u1 = [Unit(50,20,"soldier",1, 5, 0,1,2,0) for i in range(4)]
+#dpl1 = [(i+3,1) for i in range(4)]
+#a1 = Army("Army 1",1, u1, dpl1, None)
+#
+#u2 = [Unit(50,20,"soldier",2, 5, 0,1,2,0) for i in range(4)]
+#dpl2 = [(i+3,8) for i in range(4)]
+#a2 = Army("Army 2", 2, u2, dpl2, None)
 
 # assign deployment
 
@@ -34,12 +35,12 @@ a2 = Army("Army 2", 2, u2, dpl2, None)
 
 # print result
 
-n = 100
+n = 10
 win1 = 0
 win2 = 0
 draw = 0
 
-#board_size = 20
+#board_size = 40
 #unit_amount = 10
 #
 #army_one_start_x = 3
@@ -48,8 +49,15 @@ draw = 0
 #army_two_start_x = 3
 #army_two_start_y = 15
 #
-#viz = game_visualizer(None, None)
-battle = Battle(bf, a1, a2, None)
+viz = game_visualizer(None, None)
+shape1 = (15,4)
+shape1_start_height = 15
+shape2 = (20,3)
+shape2_start_height = 10
+shape3 = (2,30)
+shape3_start_height = 5
+bf, a1, a2 = basic_setup(40, 40, shape1, shape2, (shape1_start_height, 0), (shape2_start_height,7))
+battle = Battle(bf, a1, a2, viz)
 battle.setup()
 
 for i in range(n):
@@ -72,9 +80,9 @@ for i in range(n):
     #dpl2 = [(i+army_two_start_x, army_two_start_y) for i in range(unit_amount)]
     #a2 = Army("Army 2", 2, u2, dpl2, None)
 
-    #viz.board_size = bf._shape[0]
-    #viz.battlefield = bf
-    #viz.game_number = i
+    viz.board_size = bf._shape[0]
+    viz.battlefield = bf
+    viz.game_number = i
 
     #battle = Battle(bf, a1, a2, viz)
 
@@ -88,10 +96,10 @@ for i in range(n):
     elif result.num == 2:
         win2 += 1
 
-    #viz.army_one_win_count = win1
-    #viz.army_two_win_count = win2
+    viz.army_one_win_count = win1
+    viz.army_two_win_count = win2
 
-#viz.py_game.quit()
+viz.py_game.quit()
 
 print("n = %d" % (n))
 print("Army 1 wins:\t%f" % (float(win1)/n))

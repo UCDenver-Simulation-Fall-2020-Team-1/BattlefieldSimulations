@@ -1,6 +1,5 @@
 # import BattleField
 # import Unit
-from viz import generate_frame
 from datetime import datetime
 import random
 from viz import game_visualizer
@@ -19,8 +18,6 @@ class Battle:
         self.turns_since_last_combat = 0
         self.desc = desc + "_" + str(datetime.now().strftime("%m-%d_%H:%M:%S"))
         self.frame_title = self.desc + "_" + "turn%03d" + "_" + "move%03d" +  ".png"
-        self.generate_frames = generate_frames
-        # some debug level?
         self.viz = game_view
 
     def run(self):
@@ -37,10 +34,8 @@ class Battle:
 
                         if self.viz != None:
                             self.viz.update_board(self.battlefield)
-                            time.sleep(0.05)
+                            time.sleep(0.0001)
 
-                        if self.generate_frames:
-                            generate_frame(self.battlefield, self.frame_title() % (self.turn_number, self.move_number))
                 self.turn_number += 1
                 self.move_number = 0
                 self.turns_since_last_combat += 1
@@ -55,6 +50,9 @@ class Battle:
     def setup(self):
 
         if self.viz != None:
+            self.viz.battlefield = self.battlefield
+            self.viz.board_size = self.battlefield._shape[0]
+
             self.viz.start()
 
         # put units on battlefield in their deployment zones
@@ -62,8 +60,6 @@ class Battle:
             self.battlefield.get_tile(*self.army1.get_deployment()[i]).set_unit(self.army1.get_units()[i])
         for i in range(len(self.army2.units)):
             self.battlefield.get_tile(*self.army2.get_deployment()[i]).set_unit(self.army2.get_units()[i])
-        if self.generate_frames:
-            generate_frame(self.battlefield, self.frame_title%(self.turn_number,self.move_number))
         self.turn_number +=1
 
         #print(self.battlefield)

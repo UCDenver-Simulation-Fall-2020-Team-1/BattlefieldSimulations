@@ -31,7 +31,7 @@ class game_visualizer:
         self.height = self.board_size * self.square_size + self.margin * self.board_size + 5
 
         self.game_display = self.py_game.display.set_mode((self.width, self.height))
-        pygame.display.set_caption("Game: " + str(self.game_number))
+        self.py_game.display.set_caption("Game: " + str(self.game_number))
 
         self.game_display.fill(self.black)
 
@@ -96,7 +96,7 @@ class game_visualizer:
         self.py_game.init()
         self.setup_game_window()
 
-        pygame.display.update()
+        self.py_game.display.update()
 
     def update_board(self, battlefield):
         self.battlefield = battlefield
@@ -112,8 +112,6 @@ class game_visualizer:
         self.army_one_stats_bar.center = ((self.width - 50), self.height - (self.height-25))
         self.army_two_stats_bar.center = ((self.width - 50), self.height - (self.height-50))
 
-
-
         for row in range(self.board_size):
             self.grid.append([])
             for column in range(self.board_size):
@@ -125,7 +123,7 @@ class game_visualizer:
         for row in self.battlefield._tiles:
             for cell in row:
                 if cell.unit():
-                    self.grid[i][j] = cell.unit().allegiance
+                    self.grid[i][j] = (cell.unit().allegiance, cell.unit().get_category())
                 elif not cell.is_passable():
                     self.grid[i][j] = -1
                 else:
@@ -146,22 +144,59 @@ class game_visualizer:
         for row in range(self.board_size):
             for column in range(self.board_size):
                 color = self.white
-                if self.grid[row][column] == -1:
+                #Check if the grid location is going to be a tuple which would indicate a unit is on the grid space.
+                #Search it for the allegiance and the unit category
+                if isinstance(self.grid[row][column], tuple):
+                    if self.grid[row][column][0] == 1:
+                        if self.grid[row][column][1] == "Soldier":
+                            ratio = self.get_color_gradient(column, row)
+                            color = (int(255 * ratio), int(255 * ratio), 255)
+                            self.draw_square(color, column, row)
+                        elif self.grid[row][column][1] == "Healer":
+                            ratio = self.get_color_gradient(column, row)
+                            color = (int(255 * ratio), int(255 * ratio), 255)
+                            self.draw_ellipse(color, column, row)
+                        elif self.grid[row][column][1] == "Ranger":
+                            ratio = self.get_color_gradient(column, row)
+                            color = (255, 127, int(255*ratio))
+                            self.draw_square(color, column, row)
+                    elif self.grid[row][column][0] == 2:
+                        if self.grid[row][column][1] == "Soldier":
+                            ratio = self.get_color_gradient(column, row)
+                            color = (255, int(255 * ratio), int(255 * ratio))
+                            self.draw_square(color, column, row)
+                        elif self.grid[row][column][1] == "Healer":
+                            ratio = self.get_color_gradient(column, row)
+                            color = (255, int(255 * ratio), int(255 * ratio))
+                            self.draw_ellipse(color, column, row)
+                        elif self.grid[row][column][1] == "Ranger":
+                            ratio = self.get_color_gradient(column, row)
+                            color = (255, 255, int(255 * ratio))
+                            self.draw_square(color, column, row)
+
+                elif self.grid[row][column] == -1:
                     color = self.brown
-                elif self.grid[row][column] == 1:
-                    ratio = 1 - (self.battlefield.get_tile(column, row).unit().health / self.battlefield.get_tile(column, row).unit().health_max)
-                    color = (int(255*ratio), int(255*ratio), 255)
-                elif self.grid[row][column] == 2:
-                    ratio = 1 - (self.battlefield.get_tile(column, row).unit().health / self.battlefield.get_tile(column, row).unit().health_max)
-                    color = (255, int(255*ratio), int(255*ratio))
-                pygame.draw.rect(self.game_display,
-                                 color,
-                                 [(self.margin + self.square_size) * column + self.margin,
-                                  (self.margin + self.square_size) * row + self.margin,
-                                  self.square_size,
-                                  self.square_size])
+                    self.draw_square(color, column, row)
+
+                else:
+                    self.draw_square(color, column, row)
 
         self.game_display.blit(self.army_one_wins_text, self.army_one_stats_bar)
         self.game_display.blit(self.army_two_wins_text, self.army_two_stats_bar)
 
-        pygame.display.update()
+        self.py_game.display.update()
+
+    def get_color_gradient(self, column, row):
+        return (1 - (self.battlefield.get_tile(column, row).unit().health / self.battlefield.get_tile(column, row).unit().health_max))
+
+    def draw_ellipse(self, color, column, row):
+        self.py_game.draw.ellipse(self.game_display,
+                                  color, [(self.margin + self.square_size) * column + self.margin,
+                                          (self.margin + self.square_size) * row + self.margin,
+                                          self.square_size, self.square_size])
+
+    def draw_square(self, color, column, row):
+        self.py_game.draw.rect(self.game_display,
+                               color, [(self.margin + self.square_size) * column + self.margin,
+                                       (self.margin + self.square_size) * row + self.margin,
+                                       self.square_size, self.square_size])

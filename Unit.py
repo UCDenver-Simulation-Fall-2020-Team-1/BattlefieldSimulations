@@ -32,7 +32,6 @@ class Unit:
         Unit.id_gen += 1
         self.tile = None
 
-
     #getters
     def get_health(self):
         return self.health

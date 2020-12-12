@@ -50,13 +50,13 @@ draw = 0
 #army_two_start_y = 15
 #
 viz = game_visualizer(None, None)
-shape1 = (15,4)
-shape1_start_height = 15
-shape2 = (20,3)
-shape2_start_height = 10
+shape1 = (10,5)
+shape1_start_height = 8
+shape2 = (25,2)
+shape2_start_height = 2
 shape3 = (2,30)
 shape3_start_height = 5
-bf, a1, a2 = basic_setup(40, 40, shape1, shape2, (shape1_start_height, 0), (shape2_start_height,7))
+bf, a1, a2 = basic_setup(30, 30, shape1, shape2, (shape1_start_height, 20), (shape2_start_height,10))
 battle = Battle(bf, a1, a2, viz)
 battle.setup()
 
